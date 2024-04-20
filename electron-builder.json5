@@ -1,0 +1,32 @@
+/**
+ * @see https://www.electron.build/configuration/configuration
+ */
+{
+  appId: "com.github.waterbeside.pdf-merger",
+  asar: true,
+  directories: {
+    output: "release",
+  },
+  files: ["dist"],
+  mac: {
+    artifactName: "${productName}_${version}.${ext}",
+    icon: "./src/assets/logo@512.png",
+    target: ["dmg"],
+  },
+  win: {
+    icon: "./src/assets/logo@512.png",
+    target: [
+      {
+        target: "nsis",
+        arch: ["x64"],
+      },
+    ],
+    artifactName: "${productName}_${version}.${ext}",
+  },
+  nsis: {
+    oneClick: false,
+    perMachine: false,
+    allowToChangeInstallationDirectory: true,
+    deleteAppDataOnUninstall: false,
+  },
+}
