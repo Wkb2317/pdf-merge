@@ -1,10 +1,12 @@
-import { dialog, ipcMain, app } from "electron";
+import { dialog, ipcMain, app, BrowserWindow, screen } from "electron";
 import { store } from "./setIpcStore";
 import { mergePdf, setMainWinProgressBar } from "../utils";
 import wins from "../wins";
 import path from "path";
-import { WIN_WIDTH, WIN_HEIGHT } from "../const";
+import { WIN_WIDTH, WIN_HEIGHT, BACKGROUND_COLOR } from "../const";
 import fs from "fs";
+import { ROOT_PATH, preload } from "../wins/createMainwin";
+import { menu } from "../main/menu";
 
 export function setIpcs() {
   // 打开选择文件夹
@@ -90,5 +92,35 @@ export function setIpcs() {
       name: app.getName(),
     };
     e.returnValue = data;
+  });
+
+  ipcMain.handle("createOtherWindow", (e, data) => {
+    const allWindows = BrowserWindow.getAllWindows();
+    var vipWin = new BrowserWindow({
+      width: screen.getPrimaryDisplay().workAreaSize.width,
+      height: screen.getPrimaryDisplay().workAreaSize.height,
+      minWidth: screen.getPrimaryDisplay().workAreaSize.width,
+      minHeight: screen.getPrimaryDisplay().workAreaSize.height,
+      title: "靖靖，生日快乐",
+      icon: path.join(ROOT_PATH.public, "favicon.ico"),
+      backgroundColor: BACKGROUND_COLOR,
+      // frame: false,
+      // closable: true,
+      parent: allWindows[0], // win是主窗口
+      titleBarOverlay: {
+        color: BACKGROUND_COLOR,
+        symbolColor: "#fff",
+      },
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
+    });
+    vipWin.loadURL("https://www.wangkangbao.top/happybirthday");
+    vipWin.menuBarVisible = false;
+    vipWin.setTitle("靖靖，生日快乐");
+    vipWin.on("closed", () => {
+      vipWin.destroy();
+    });
   });
 }

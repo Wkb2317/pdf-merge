@@ -43,6 +43,8 @@ export async function createMainwin() {
     },
   });
 
+  // wins.mainwin.webContents.openDevTools();
+
   if (app.isPackaged) {
     wins.mainwin.loadFile(indexHtml);
   } else {

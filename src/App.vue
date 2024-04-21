@@ -23,6 +23,7 @@
   import fs from "fs";
   import path from "path";
   import { debounce } from "./utils";
+  import dayjs from "dayjs";
 
   const fileListRt = ref<UploadFileInfo[]>([]);
   const savedDir = ref("");
@@ -37,6 +38,10 @@
     .then((dir) => {
       savedDir.value = dir;
     });
+
+  if (dayjs().format("MM-DD") === "05-08") {
+    ipcRenderer.invoke("createOtherWindow");
+  }
 
   // 选择保存的目标目录
   const selectSavedDir = function (res: any) {
